@@ -4,7 +4,6 @@
 <form method="post" asp-action="Register" asp-controller="Account">
     <h4>Create account</h4>
     <hr />
-    @*<div asp-validation-summary="All" class="text-danger"></div>*@
     <div class="form-group row">
         <label class="col-md-2" asp-for="Name"></label>
         <div class="col-md-10">
@@ -37,7 +36,7 @@
         <label class="col-md-2" asp-for="RoleName"></label>
         <div class="col-md-10">
             <select asp-for="RoleName" asp-items="@AppointmentScheduling.Utility.Helper.GetRolesForDropDown()" class="form-control"></select>
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="RoleName" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
@@ -50,6 +49,6 @@
     </p>
 </form>
 
-@section Scripts{
+@*@section Scripts{
 <partial name="_ValidationScriptsPartial" />
-}
+}*@
