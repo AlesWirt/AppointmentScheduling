@@ -51,8 +51,9 @@ namespace AppointmentScheduling
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
+            app.UseAuthentication();
+
 
             app.UseEndpoints(endpoints =>
             {
