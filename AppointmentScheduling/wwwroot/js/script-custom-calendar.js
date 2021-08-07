@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     InitializeCalendar();
 })
+
 function InitializeCalendar() {
     try {
         $('#calendar').fullCalendar({
@@ -13,7 +14,7 @@ function InitializeCalendar() {
             selectable: true,
             editable: false,
             select: function (event) {
-                onShowModal(event, null)
+                onShowModal(event, null);
             }
         })
     }
@@ -23,5 +24,9 @@ function InitializeCalendar() {
 }
 
 function onShowModal(obj, isEventDetails) {
-    $('#appointmentInput').modal('show');
+    $("#appointmentInput").modal("show");
+}
+
+function onCloseModal() {
+    $("#appointmentInput").modal("hide");
 }
