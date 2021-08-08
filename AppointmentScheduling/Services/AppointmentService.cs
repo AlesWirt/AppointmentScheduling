@@ -41,5 +41,35 @@ namespace AppointmentScheduling.Services
                            }).ToList();
             return patients;
         }
+
+        public async Task<int> AddUpdate(AppointmentVM model)
+        {
+            var startDate = DateTime.Parse(model.StartDate);
+            var endDate = DateTime.Parse(model.StartDate).AddMinutes(Convert.ToDouble(model.Duration));
+
+            if(model != null && model.Id > 0)
+            {
+
+            }
+            else
+            {
+                //create
+                Appointment appointment = new Appointment
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Duration = model.Duration,
+                    DoctorId = model.DoctorId,
+                    PatientId = model.PatientId,
+                    AdminId = model.AdminId,
+                    IsDoctorApproved = false
+                };
+                _db.Appointments.Add(appointment);
+                await _db.SaveChangesAsync();
+                return 2;
+            }
+        }
     }
 }
