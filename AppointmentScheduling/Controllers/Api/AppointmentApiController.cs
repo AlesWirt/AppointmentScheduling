@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using AppointmentScheduling.Services;
+using AppointmentScheduling.Utility;
+using AppointmentScheduling.Models.ViewModels;
 using System;
 using System.Security.Claims;
 using System.Collections.Generic;
@@ -25,9 +27,30 @@ namespace AppointmentScheduling.Controllers.Api
             _loginUserId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             _role = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
         }
-        public IActionResult Index()
+
+        [HttpPost]
+        [Route("SaveClandarData")]
+        public IActionResult SaveClandarData(AppointmentVM data)
         {
-            return View();
+            CommonResponse<int> commonResponse = new CommonResponse<int>();
+            try
+            {
+                commonResponse.Status = _appointmentService.AddUpdate(data).Result;
+                if(commonResponse.Status == 1)
+                {
+                    commonResponse.Message = Helper.appointmentUpdated;
+                }
+                if (commonResponse.Status == 2)
+                {
+                    commonResponse.Message = Helper.appointmentAdded;
+                }
+            }
+            catch(Exception e)
+            {
+                commonResponse.Message = e.Message;
+                commonResponse.Status = Helper.failure_code;
+            }
+            return Ok(commonResponse);
         }
     }
 }
