@@ -10,7 +10,7 @@ namespace AppointmentScheduling.Services
 {
     public class AppointmentService : IAppointmentService
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
 
         public AppointmentService(ApplicationDbContext db)
         {

@@ -29,8 +29,8 @@ namespace AppointmentScheduling.Controllers.Api
         }
 
         [HttpPost]
-        [Route("SaveClandarData")]
-        public IActionResult SaveClandarData(AppointmentVM data)
+        [Route("SaveCalendarData")]
+        public IActionResult SaveCalendarData(AppointmentVM data)
         {
             CommonResponse<int> commonResponse = new CommonResponse<int>();
             try
