@@ -8,7 +8,9 @@ $(document).ready(function () {
 
     InitializeCalendar();
 })
+
 var calendar;
+
 function InitializeCalendar() {
     try {
         
@@ -24,7 +26,6 @@ function InitializeCalendar() {
                 selectable: true,
                 editable: false,
                 select: function (event) {
-                    $("#appointmentInput").modal("show");
                     onShowModal(event, null);
                 }
             });
@@ -45,7 +46,7 @@ function onCloseModal() {
 }
 
 function onSubmitForm() {
-    /*if (checkValidation()) {*/
+    if (checkValidation()) {
         
         var requestData = {
             Id: parseInt($("#id").val()),
@@ -75,25 +76,25 @@ function onSubmitForm() {
                 $.notify("Error", "error");
             }
         });
-    /*}*/
+    }
 }
 
 function checkValidation() {
     var isValid = true;
     if ($("#title").val() === undefined || $("#title").val() === "") {
         isValid = false;
-        $("#title").val().addClass('error');
+        $("#title").addClass('error');
     }
     else {
-        $("#title").val().removeClass('error');
+        $("#title").removeClass('error');
     }
 
     if ($("#appointmentDate").val() === undefined || $("#appointmentDate").val() === "") {
         isValid = false;
-        $("#appointmentDate").val().addClass('error');
+        $("#appointmentDate").addClass('error');
     }
     else {
-        $("#appointmentDate").val().removeClass('error');
+        $("#appointmentDate").removeClass('error');
     }
 
     return isValid;

@@ -35,8 +35,9 @@ namespace AppointmentScheduling.Controllers.Api
             CommonResponse<int> commonResponse = new CommonResponse<int>();
             try
             {
+                //commonResponse.Status = _appointmentService.AddUpdate2(data);
                 commonResponse.Status = _appointmentService.AddUpdate(data).Result;
-                if(commonResponse.Status == 1)
+                if (commonResponse.Status == 1)
                 {
                     commonResponse.Message = Helper.appointmentUpdated;
                 }
