@@ -55,7 +55,7 @@ namespace AppointmentScheduling.Controllers.Api
         }
 
         [HttpGet]
-        [Route("GetCalendatData")]
+        [Route("GetCalendarData")]
         public IActionResult GetCalendarData(string doctorId)
         {
             CommonResponse<List<AppointmentVM>> commonResponse = new CommonResponse<List<AppointmentVM>>();
