@@ -29,7 +29,7 @@ function InitializeCalendar() {
                     onShowModal(event, null);
                 },
                 eventDisplay: 'block',
-                events: function (fetchInfo, sucessCallback, failureCallback) {
+                events: function (fetchInfo, successCallback, failureCallback) {
                     $.ajax({
                         url: routeURL + '/api/Appointment/GetCalendarData?doctorId=' + $("#doctorId").val(),
                         type: 'GET',
@@ -41,7 +41,7 @@ function InitializeCalendar() {
                                     events.push({
                                         title: data.title,
                                         description: data.description,
-                                        star: data.startDate,
+                                        start: data.startDate,
                                         end: data.endDate,
                                         backgroundColor: data.isDoctorApproved ? "#28a745" : "#dc3545",
                                         borderColor: "#162466",
