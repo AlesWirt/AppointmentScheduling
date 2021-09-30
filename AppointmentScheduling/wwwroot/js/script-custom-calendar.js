@@ -1,68 +1,95 @@
 ﻿var routeURL = location.protocol + "//" + location.host;
 $(document).ready(function () {
-
     $("#appointmentDate").kendoDateTimePicker({
         value: new Date(),
-        dateInput: false
+        dateInput: false,
+        format: 'dd/MM/yyyy HH:mm:ss'
     });
-
     InitializeCalendar();
-})
-
-var calendar;
+});
 
 function InitializeCalendar() {
     try {
-        
+
+
         var calendarEl = document.getElementById('calendar');
         if (calendarEl != null) {
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next,today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                selectable: true,
-                editable: false,
-                select: function (event) {
-                    onShowModal(event, null);
-                },
-                eventDisplay: 'block',
-                events: function (fetchInfo, successCallback, failureCallback) {
-                    $.ajax({
-                        url: routeURL + '/api/Appointment/GetCalendarData?doctorId=' + $("#doctorId").val(),
-                        type: 'GET',
-                        dataType: 'JSON',
-                        success: function (response) {
-                            var events = [];
-                            if (response.status === 1) {
-                                $.each(response.dataenum, function (i, data){
-                                    events.push({
-                                        title: data.title,
-                                        description: data.description,
-                                        start: data.startDate,
-                                        end: data.endDate,
-                                        backgroundColor: data.isDoctorApproved ? "#28a745" : "#dc3545",
-                                        borderColor: "#162466",
-                                        id: data.id
-                                    });
-                                })
+            var calendar = new FullCalendar.Calendar(calendarEl,
+                {
+                    
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next,today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    
+                    //timeZone
+                    selectable: true,
+                    editable: false,
+                    select: function (event) {
+                        onShowModal(event, null);
+                    },
+                    eventDisplay: 'block',
+                    events: function (fetchInfo, successCallback, failureCallback) {
+                        $.ajax({
+                            url: routeURL + '/api/Appointment/GetCalendarData?doctorId=' + $("#doctorId").val(),
+                            type: 'GET',
+                            dataType: 'JSON',
+                            success: function (response) {
+                                console.log(response);
+                                var events = [];
+                                if (response.status === 1) {
+                                    $.each(response.dataEnum, function (i, data) {
+                                        
+
+                                        events.push({
+                                            
+                                            title: data.title,
+                                            description: data.description,
+                                            start: data.startDate,
+                                            end: data.endDate,
+                                            backgroundColor: data.isDoctorApprove ? "#28a745" : "#dc3545",
+                                            borderColor: "#162466",
+                                            textColor: "white",
+                                            id: data.id
+                                        });
+                                    })
+                                }
+                                //вот для этого
+                                console.log(events);
+                                successCallback(events);
+                                //successCallback([
+                                //    {
+                                //        title: 'event1',
+                                //        start: '2021-09-01'
+                                //    },
+                                //    {
+                                //        title: 'event2',
+                                //        start: '2021-10-02',
+                                //        end: '2010-01-07'
+                                //    },
+                                //    {
+                                //        title: 'event3',
+                                //        start: '2021-09-11T12:30:00',
+                                //        allDay: false // will make the time show
+                                //    }
+                                //]);
+                            },
+                            error: function (xhr) {
+                                $.notify("Error", "error");
                             }
-                            successCallback(events);
-                        },
-                        error: function (xhr) {
-                            $.notify("Error", "error");
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
             calendar.render();
         }
+
     }
     catch (e) {
         alert(e);
     }
+
 }
 
 function onShowModal(obj, isEventDetails) {
@@ -75,7 +102,7 @@ function onCloseModal() {
 
 function onSubmitForm() {
     if (checkValidation()) {
-        
+
         var requestData = {
             Id: parseInt($("#id").val()),
             Title: $("#title").val(),
@@ -85,7 +112,7 @@ function onSubmitForm() {
             DoctorId: $("#doctorId").val(),
             PatientId: $("#patientId").val()
         };
-    
+
         $.ajax({
             url: routeURL + '/api/Appointment/SaveCalendarData',
             type: 'POST',
