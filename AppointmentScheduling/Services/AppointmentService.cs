@@ -98,12 +98,30 @@ namespace AppointmentScheduling.Services
             {
                 Id = c.Id,
                 Description = c.Description,
-                StartDate = c.StartDate.ToString("dd.MM.yyyy HH:mm:ss"),
-                EndDate = c.EndDate.ToString("dd.MM.yyyy HH:mm:ss"),
+                StartDate = c.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                EndDate = c.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Title = c.Title,
                 Duration = c.Duration,
                 IsDoctorApproved = c.IsDoctorApproved
             }).ToList();
+        }
+
+        public AppointmentVM GetAppointmentById(int appointmentId)
+        {
+            return _db.Appointments.Where(x => x.Id == appointmentId).ToList().Select(c => new AppointmentVM()
+            {
+                Id = c.Id,
+                Description = c.Description,
+                StartDate = c.StartDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                EndDate = c.EndDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Title = c.Title,
+                Duration = c.Duration,
+                IsDoctorApproved = c.IsDoctorApproved,
+                PatientId = c.PatientId,
+                DoctorId = c.DoctorId,
+                PatientName = _db.Users.Where(x => x.Id == c.PatientId).Select(x => x.Name).FirstOrDefault(),
+                DoctorName = _db.Users.Where(x => x.Id == c.DoctorId).Select(x => x.Name).FirstOrDefault(),
+            }).SingleOrDefault();
         }
     }
 }
