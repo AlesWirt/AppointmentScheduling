@@ -8,23 +8,22 @@ $(document).ready(function () {
     InitializeCalendar();
 });
 
+var calendar;
+
 function InitializeCalendar() {
     try {
 
 
         var calendarEl = document.getElementById('calendar');
         if (calendarEl != null) {
-            var calendar = new FullCalendar.Calendar(calendarEl,
+            calendar = new FullCalendar.Calendar(calendarEl,
                 {
-                    
                     initialView: 'dayGridMonth',
                     headerToolbar: {
                         left: 'prev,next,today',
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
-                    
-                    //timeZone
                     selectable: true,
                     editable: false,
                     select: function (event) {
@@ -37,12 +36,9 @@ function InitializeCalendar() {
                             type: 'GET',
                             dataType: 'JSON',
                             success: function (response) {
-                                console.log(response);
                                 var events = [];
                                 if (response.status === 1) {
                                     $.each(response.dataEnum, function (i, data) {
-                                        
-
                                         events.push({
                                             
                                             title: data.title,
@@ -56,30 +52,15 @@ function InitializeCalendar() {
                                         });
                                     })
                                 }
-                                //вот для этого
-                                console.log(events);
                                 successCallback(events);
-                                //successCallback([
-                                //    {
-                                //        title: 'event1',
-                                //        start: '2021-09-01'
-                                //    },
-                                //    {
-                                //        title: 'event2',
-                                //        start: '2021-10-02',
-                                //        end: '2010-01-07'
-                                //    },
-                                //    {
-                                //        title: 'event3',
-                                //        start: '2021-09-11T12:30:00',
-                                //        allDay: false // will make the time show
-                                //    }
-                                //]);
                             },
                             error: function (xhr) {
                                 $.notify("Error", "error");
                             }
                         });
+                    },
+                    eventClick: function (info) {
+                        getEventDetailsById(info.event);
                     }
                 });
             calendar.render();
@@ -93,6 +74,15 @@ function InitializeCalendar() {
 }
 
 function onShowModal(obj, isEventDetails) {
+    if (isEventDetails != null) {
+        $("#title").val(obj.title);
+        $("#description").val(obj.description);
+        $("#appointmentDate").val(obj.startDate);
+        $("#duration").val(obj.duration);
+        $("#doctorId").val(obj.doctorId);
+        $("#patientId").val(obj.patientId);
+        $("#id").val(obj.id);
+    }
     $("#appointmentInput").modal("show");
 }
 
@@ -153,4 +143,25 @@ function checkValidation() {
     }
 
     return isValid;
+}
+
+function getEventDetailsById(info) {
+    $.ajax({
+        url: routeURL + '/api/Appointment/GetCalendarDataById/' + info.id,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function (response) {
+            if (response.status === 1 && response.dataEnum !== undefined) {
+                onShowModal(response.dataEnum, true);
+            }
+            successCallback(events);
+        },
+        error: function (xhr) {
+            $.notify("Error", "error");
+        }
+    });
+}
+
+function onDoctorChange() {
+    calendar.refetchEvents();
 }

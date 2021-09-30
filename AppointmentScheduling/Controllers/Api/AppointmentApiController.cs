@@ -87,14 +87,14 @@ namespace AppointmentScheduling.Controllers.Api
 
         [HttpGet]
         [Route("GetCalendarDataById/{id}")]
-        public IActionResult GetCalendarDataById(int appointmentId)
+        public IActionResult GetCalendarDataById(int id)
         {
             CommonResponse<AppointmentVM> commonResponse = new CommonResponse<AppointmentVM>();
 
             try
             {
                 
-                commonResponse.DataEnum = _appointmentService.GetAppointmentById(appointmentId);
+                commonResponse.DataEnum = _appointmentService.GetAppointmentById(id);
                 commonResponse.Status = Helper.success_code;
             }
             catch (Exception e)
