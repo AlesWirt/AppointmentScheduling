@@ -80,6 +80,14 @@ function onShowModal(obj, isEventDetails) {
         $("#doctorId").val(obj.doctorId);
         $("#patientId").val(obj.patientId);
         $("#id").val(obj.id);
+        $("#lblPatientName").html(obj.patientName);
+        $("#lblDoctorName").html(obj.doctorName);
+        if (obj.isDoctorApproved) {
+            $("#lblStatus").html('Approved');
+        }
+        else {
+            $("#lblStatus").html('Pending');
+        }
     }
     else {
         $("#appointmentDate").val(obj.startStr + " " + new moment().format("hh:mm A"));
@@ -95,7 +103,6 @@ function onCloseModal() {
     $("#description").val('');
     $("#appointmentDate").val('');
     $("#duration").val('');
-    $("#doctorId").val('');
     $("#patientId").val('');
     $("#appointmentInput").modal("hide");
 }
