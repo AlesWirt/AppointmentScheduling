@@ -123,5 +123,27 @@ namespace AppointmentScheduling.Services
                 DoctorName = _db.Users.Where(x => x.Id == c.DoctorId).Select(x => x.Name).FirstOrDefault(),
             }).SingleOrDefault();
         }
+
+        public async Task<int> Delete(int id)
+        {
+            var appointment = _db.Appointments.FirstOrDefault(x => x.Id == id);
+            if (appointment != null)
+            {
+                _db.Appointments.Remove(appointment);
+                return await _db.SaveChangesAsync();
+            }
+            return 0;
+        }
+
+        public async Task<int> ConfirmEvent(int id)
+        {
+            var appointment = _db.Appointments.FirstOrDefault(x => x.Id == id);
+            if(appointment != null)
+            {
+                appointment.IsDoctorApproved = true;
+                return await _db.SaveChangesAsync();
+            }
+            return 0;
+        }
     }
 }
