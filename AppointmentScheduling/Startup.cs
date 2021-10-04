@@ -43,6 +43,10 @@ namespace AppointmentScheduling
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Home/AccessDenied");
+            });
             services.AddHttpContextAccessor();
         }
 

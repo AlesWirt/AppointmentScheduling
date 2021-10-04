@@ -17,6 +17,7 @@ namespace AppointmentScheduling.Controllers
         {
             _appointmentService = appointmentService;
         }
+        //[Authorize(Roles = Helper.Admin)]
         public IActionResult Index()
         {
             ViewBag.Duration = Helper.GetTimeDropDown();
@@ -25,5 +26,6 @@ namespace AppointmentScheduling.Controllers
 
             return View();
         }
+
     }
 }
