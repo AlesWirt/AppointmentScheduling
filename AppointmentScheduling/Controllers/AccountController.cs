@@ -42,8 +42,6 @@ namespace AppointmentScheduling.Controllers
                 {
                     var user = await _userManager.FindByNameAsync(model.Email);
                     HttpContext.Session.SetString("ssUserName", user.Name);
-                    //var userName = HttpContext.Session.GetString("ssuserName");
-
                     return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid login attempt");
@@ -78,8 +76,15 @@ namespace AppointmentScheduling.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, model.RoleName);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    if (!User.IsInRole(Helper.Admin))
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                    }
+                    else
+                    {
+                        TempData["newAdminSignUp"] = user.Name;
+                    }
+                    return RedirectToAction("Index", "Appointment");
                 }
                 foreach (var error in result.Errors)
                 {
