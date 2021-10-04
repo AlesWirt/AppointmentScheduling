@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using AppointmentScheduling.Models;
 using System;
@@ -39,6 +40,10 @@ namespace AppointmentScheduling.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(model.Email);
+                    HttpContext.Session.SetString("ssUserName", user.Name);
+                    //var userName = HttpContext.Session.GetString("ssuserName");
+
                     return RedirectToAction("Index", "Appointment");
                 }
                 ModelState.AddModelError("", "Invalid login attempt");
