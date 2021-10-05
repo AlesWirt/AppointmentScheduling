@@ -100,6 +100,7 @@ function onShowModal(obj, isEventDetails) {
         $("#id").val(0);
         $("#btnDelete").addClass("d-none");
         $("#btnSubmit").removeClass("d-none");
+        $("#btnConfirm").removeClass("d-none");
     }
     $("#appointmentInput").modal("show");
 }
